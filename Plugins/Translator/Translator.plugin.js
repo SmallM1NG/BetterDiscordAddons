@@ -327,7 +327,7 @@ module.exports = (_ => {
 				languages: googleLanguages,
 				key: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 				endpoint: "https://api.openai.com/v1/chat/completions",
-				model: "gpt-3.5-turbo"
+				model: "gpt-6-luna"
 			},
 			itranslate: {
 				name: "iTranslate",
@@ -489,7 +489,123 @@ module.exports = (_ => {
 				this.forceUpdateAll();
 			}
 
+			getCustomSettingsLabels () {
+				const translations = {
+					"bg": ["Собствени API ключове:", "API ключ:", "API адрес:", "Идентификатор на модел:", "Режим на мислене", "Температура (0-2)", "Top P (0-1)"],
+					"cs": ["Vlastní API klíče:", "API klíč:", "Adresa API:", "ID modelu:", "Režim přemýšlení", "Teplota (0-2)", "Top P (0-1)"],
+					"da": ["Egne API-nøgler:", "API-nøgle:", "API-adresse:", "Model-id:", "Tænkningstilstand", "Temperatur (0-2)", "Top P (0-1)"],
+					"de": ["Eigene API-Schlüssel:", "API-Schlüssel:", "API-Adresse:", "Modell-ID:", "Denkmodus", "Temperatur (0-2)", "Top P (0-1)"],
+					"el": ["Προσωπικά κλειδιά API:", "Κλειδί API:", "Διεύθυνση API:", "Αναγνωριστικό μοντέλου:", "Λειτουργία σκέψης", "Θερμοκρασία (0-2)", "Top P (0-1)"],
+					"es": ["Claves API propias:", "Clave API:", "Dirección API:", "ID del modelo:", "Modo de razonamiento", "Temperatura (0-2)", "Top P (0-1)"],
+					"es-419": ["Claves API propias:", "Clave API:", "Dirección API:", "ID del modelo:", "Modo de razonamiento", "Temperatura (0-2)", "Top P (0-1)"],
+					"fi": ["Omat API-avaimet:", "API-avain:", "API-osoite:", "Mallin tunnus:", "Ajattelutila", "Lämpötila (0-2)", "Top P (0-1)"],
+					"fr": ["Clés API personnelles :", "Clé API :", "Adresse API :", "ID du modèle :", "Mode réflexion", "Température (0-2)", "Top P (0-1)"],
+					"hi": ["अपनी API कुंजियाँ:", "API कुंजी:", "API पता:", "मॉडल आईडी:", "चिंतन मोड", "तापमान (0-2)", "Top P (0-1)"],
+					"hr": ["Vlastiti API ključevi:", "API ključ:", "API adresa:", "ID modela:", "Način razmišljanja", "Temperatura (0-2)", "Top P (0-1)"],
+					"hu": ["Saját API-kulcsok:", "API-kulcs:", "API-cím:", "Modellazonosító:", "Gondolkodási mód", "Hőmérséklet (0-2)", "Top P (0-1)"],
+					"it": ["Chiavi API personali:", "Chiave API:", "Indirizzo API:", "ID modello:", "Modalità ragionamento", "Temperatura (0-2)", "Top P (0-1)"],
+					"ja": ["独自の API キー:", "API キー:", "API アドレス:", "モデル ID:", "思考モード", "温度 (0-2)", "Top P (0-1)"],
+					"ko": ["사용자 API 키:", "API 키:", "API 주소:", "모델 ID:", "사고 모드", "온도 (0-2)", "Top P (0-1)"],
+					"lt": ["Nuosavi API raktai:", "API raktas:", "API adresas:", "Modelio ID:", "Mąstymo režimas", "Temperatūra (0-2)", "Top P (0-1)"],
+					"nl": ["Eigen API-sleutels:", "API-sleutel:", "API-adres:", "Model-ID:", "Denkmodus", "Temperatuur (0-2)", "Top P (0-1)"],
+					"no": ["Egne API-nøkler:", "API-nøkkel:", "API-adresse:", "Modell-ID:", "Tenkemodus", "Temperatur (0-2)", "Top P (0-1)"],
+					"pl": ["Własne klucze API:", "Klucz API:", "Adres API:", "Identyfikator modelu:", "Tryb myślenia", "Temperatura (0-2)", "Top P (0-1)"],
+					"pt-BR": ["Chaves de API próprias:", "Chave de API:", "Endereço da API:", "ID do modelo:", "Modo de raciocínio", "Temperatura (0-2)", "Top P (0-1)"],
+					"ro": ["Chei API proprii:", "Cheie API:", "Adresă API:", "ID model:", "Mod de gândire", "Temperatură (0-2)", "Top P (0-1)"],
+					"ru": ["Собственные ключи API:", "Ключ API:", "Адрес API:", "Идентификатор модели:", "Режим размышления", "Температура (0-2)", "Top P (0-1)"],
+					"sv": ["Egna API-nycklar:", "API-nyckel:", "API-adress:", "Modell-ID:", "Tankeläge", "Temperatur (0-2)", "Top P (0-1)"],
+					"th": ["คีย์ API ของคุณ:", "คีย์ API:", "ที่อยู่ API:", "รหัสโมเดล:", "โหมดการคิด", "อุณหภูมิ (0-2)", "Top P (0-1)"],
+					"tr": ["Kendi API anahtarları:", "API anahtarı:", "API adresi:", "Model kimliği:", "Düşünme modu", "Sıcaklık (0-2)", "Top P (0-1)"],
+					"uk": ["Власні ключі API:", "Ключ API:", "Адреса API:", "Ідентифікатор моделі:", "Режим міркування", "Температура (0-2)", "Top P (0-1)"],
+					"vi": ["Khóa API riêng:", "Khóa API:", "Địa chỉ API:", "ID mô hình:", "Chế độ suy nghĩ", "Nhiệt độ (0-2)", "Top P (0-1)"],
+					"zh-CN": ["自定义 API 密钥：", "API 密钥：", "API 地址：", "模型名称：", "思考模式", "温度 (0-2)", "Top P (0-1)"],
+					"zh-TW": ["自訂 API 金鑰：", "API 金鑰：", "API 位址：", "模型名稱：", "思考模式", "溫度 (0-2)", "Top P (0-1)"],
+					"en": ["Own API Keys:", "API Key:", "API Endpoint:", "Model ID:", "Thinking Mode", "Temperature (0-2)", "Top P (0-1)"]
+				};
+				const interfaceTranslations = {
+					"bg": ["Платена версия", "Нов префикс за изключение (напр. !)", "Префикс (напр. $fr)", "+ Добавяне на нов префикс"],
+					"cs": ["Placená verze", "Nová předpona výjimky (např. !)", "Předpona (např. $fr)", "+ Přidat novou předponu"],
+					"da": ["Betalt version", "Nyt undtagelsespræfiks (f.eks. !)", "Præfiks (f.eks. $fr)", "+ Tilføj nyt præfiks"],
+					"de": ["Kostenpflichtige Version", "Neues Ausnahmepräfix (z. B. !)", "Präfix (z. B. $fr)", "+ Neues Präfix hinzufügen"],
+					"el": ["Έκδοση επί πληρωμή", "Νέο πρόθεμα εξαίρεσης (π.χ. !)", "Πρόθεμα (π.χ. $fr)", "+ Προσθήκη νέου προθέματος"],
+					"es": ["Versión de pago", "Nuevo prefijo de excepción (p. ej., !)", "Prefijo (p. ej., $fr)", "+ Añadir nuevo prefijo"],
+					"es-419": ["Versión de pago", "Nuevo prefijo de excepción (p. ej., !)", "Prefijo (p. ej., $fr)", "+ Agregar nuevo prefijo"],
+					"fi": ["Maksullinen versio", "Uusi poikkeusetuliite (esim. !)", "Etuliite (esim. $fr)", "+ Lisää uusi etuliite"],
+					"fr": ["Version payante", "Nouveau préfixe d’exception (p. ex. !)", "Préfixe (p. ex. $fr)", "+ Ajouter un préfixe"],
+					"hi": ["सशुल्क संस्करण", "नया अपवाद उपसर्ग (जैसे !)", "उपसर्ग (जैसे $fr)", "+ नया उपसर्ग जोड़ें"],
+					"hr": ["Plaćena verzija", "Novi prefiks iznimke (npr. !)", "Prefiks (npr. $fr)", "+ Dodaj novi prefiks"],
+					"hu": ["Fizetős verzió", "Új kivétel-előtag (pl. !)", "Előtag (pl. $fr)", "+ Új előtag hozzáadása"],
+					"it": ["Versione a pagamento", "Nuovo prefisso di eccezione (es. !)", "Prefisso (es. $fr)", "+ Aggiungi nuovo prefisso"],
+					"ja": ["有料版", "新しい除外プレフィックス（例: !）", "プレフィックス（例: $fr）", "+ 新しいプレフィックスを追加"],
+					"ko": ["유료 버전", "새 예외 접두사 (예: !)", "접두사 (예: $fr)", "+ 새 접두사 추가"],
+					"lt": ["Mokama versija", "Naujas išimties priešdėlis (pvz., !)", "Priešdėlis (pvz., $fr)", "+ Pridėti naują priešdėlį"],
+					"nl": ["Betaalde versie", "Nieuw uitzonderingsvoorvoegsel (bijv. !)", "Voorvoegsel (bijv. $fr)", "+ Nieuw voorvoegsel toevoegen"],
+					"no": ["Betalt versjon", "Nytt unntaksprefiks (f.eks. !)", "Prefiks (f.eks. $fr)", "+ Legg til nytt prefiks"],
+					"pl": ["Wersja płatna", "Nowy prefiks wyjątku (np. !)", "Prefiks (np. $fr)", "+ Dodaj nowy prefiks"],
+					"pt-BR": ["Versão paga", "Novo prefixo de exceção (ex.: !)", "Prefixo (ex.: $fr)", "+ Adicionar novo prefixo"],
+					"ro": ["Versiune cu plată", "Prefix nou de excepție (de ex. !)", "Prefix (de ex. $fr)", "+ Adaugă un prefix nou"],
+					"ru": ["Платная версия", "Новый префикс исключения (например, !)", "Префикс (например, $fr)", "+ Добавить новый префикс"],
+					"sv": ["Betalversion", "Nytt undantagsprefix (t.ex. !)", "Prefix (t.ex. $fr)", "+ Lägg till nytt prefix"],
+					"th": ["เวอร์ชันแบบชำระเงิน", "คำนำหน้าข้อยกเว้นใหม่ (เช่น !)", "คำนำหน้า (เช่น $fr)", "+ เพิ่มคำนำหน้าใหม่"],
+					"tr": ["Ücretli sürüm", "Yeni istisna öneki (örn. !)", "Önek (örn. $fr)", "+ Yeni önek ekle"],
+					"uk": ["Платна версія", "Новий префікс винятку (наприклад, !)", "Префікс (наприклад, $fr)", "+ Додати новий префікс"],
+					"vi": ["Phiên bản trả phí", "Tiền tố ngoại lệ mới (ví dụ: !)", "Tiền tố (ví dụ: $fr)", "+ Thêm tiền tố mới"],
+					"zh-CN": ["付费版", "新的例外前缀（例如 !）", "前缀（例如 $fr）", "+ 添加新前缀"],
+					"zh-TW": ["付費版", "新的例外前綴（例如 !）", "前綴（例如 $fr）", "+ 新增前綴"],
+					"en": ["Paid Version", "New Exception Prefix (e.g. !)", "Prefix (e.g. $fr)", "+ Add new prefix"]
+				};
+				const visibilityTranslations = {
+					"bg": ["Покажи", "Скрий"], "cs": ["Zobrazit", "Skrýt"], "da": ["Vis", "Skjul"], "de": ["Anzeigen", "Ausblenden"],
+					"el": ["Εμφάνιση", "Απόκρυψη"], "es": ["Mostrar", "Ocultar"], "es-419": ["Mostrar", "Ocultar"], "fi": ["Näytä", "Piilota"],
+					"fr": ["Afficher", "Masquer"], "hi": ["दिखाएँ", "छिपाएँ"], "hr": ["Prikaži", "Sakrij"], "hu": ["Megjelenítés", "Elrejtés"],
+					"it": ["Mostra", "Nascondi"], "ja": ["表示", "非表示"], "ko": ["표시", "숨기기"], "lt": ["Rodyti", "Slėpti"],
+					"nl": ["Tonen", "Verbergen"], "no": ["Vis", "Skjul"], "pl": ["Pokaż", "Ukryj"], "pt-BR": ["Mostrar", "Ocultar"],
+					"ro": ["Afișează", "Ascunde"], "ru": ["Показать", "Скрыть"], "sv": ["Visa", "Dölj"], "th": ["แสดง", "ซ่อน"],
+					"tr": ["Göster", "Gizle"], "uk": ["Показати", "Приховати"], "vi": ["Hiện", "Ẩn"], "zh-CN": ["显示", "隐藏"],
+					"zh-TW": ["顯示", "隱藏"], "en": ["Show", "Hide"]
+				};
+				const languageId = BDFDB.LanguageUtils.getLanguage().id;
+				const values = translations[languageId] || translations.en;
+				const interfaceValues = interfaceTranslations[languageId] || interfaceTranslations.en;
+				const visibilityValues = visibilityTranslations[languageId] || visibilityTranslations.en;
+				return {authKeys: values[0], apiKey: values[1], endpoint: values[2], model: values[3], thinking: values[4], temperature: values[5], topP: values[6], paid: interfaceValues[0], exceptionPrefix: interfaceValues[1], prefix: interfaceValues[2], addPrefix: interfaceValues[3], show: visibilityValues[0], hide: visibilityValues[1]};
+			}
+
 			getSettingsPanel (collapseStates = {}) {
+				const customLabels = this.getCustomSettingsLabels();
+				const plugin = this;
+				class AuthKeyInput extends BdApi.React.Component {
+					constructor (props) {
+						super(props);
+						this.state = {visible: false};
+					}
+					render () {
+						const key = this.props.engineKey;
+						return BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+							className: BDFDB.disCN.marginbottom8,
+							align: BDFDB.LibraryComponents.Flex.Align.CENTER,
+							children: [
+								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
+									grow: 1,
+									children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
+										key: this.state.visible ? "visible" : "hidden",
+										type: this.state.visible ? "text" : "password",
+										placeholder: translationEngines[key].key,
+										value: authKeys[key] && authKeys[key].key,
+										onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].key = (value || "").trim(); BDFDB.DataUtils.save(authKeys, plugin, "authKeys");}
+									})
+								}),
+								BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Button, {
+									size: BDFDB.LibraryComponents.Button.Sizes.SMALL,
+									color: BDFDB.LibraryComponents.Button.Colors.BRAND,
+									onClick: _ => this.setState({visible: !this.state.visible}),
+									children: this.state.visible ? customLabels.hide : customLabels.show
+								})
+							]
+						});
+					}
+				}
+				const createAuthKeyInput = key => BDFDB.ReactUtils.createElement(AuthKeyInput, {engineKey: key, key: `auth-key-${key}`});
 				let settingsPanel;
 				return settingsPanel = BDFDB.PluginUtils.createSettingsPanel(this, {
 					collapseStates: collapseStates,
@@ -509,7 +625,7 @@ module.exports = (_ => {
 						}));
 						
 						settingsItems.push(BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsPanelList, {
-							title: "Own Auth Keys:",
+							title: customLabels.authKeys,
 							children: Object.keys(translationEngines).filter(key => translationEngines[key].key).map(key => key === "oaicompat" ? BDFDB.ReactUtils.createElement("div", {
 								className: BDFDB.disCN.marginbottom8,
 								children: [
@@ -518,31 +634,20 @@ module.exports = (_ => {
 										tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
 										children: translationEngines[key].name || "OAI Compatible"
 									}),
-									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.CollapseContainer, {
-										title: "custom",
-										collapseStates: collapseStates,
+									BDFDB.ReactUtils.createElement("div", {
 										children: [
 											// API Key
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormTitle.Title, {
 												className: BDFDB.disCN.marginbottom8,
 												tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
-												children: "API Key:"
+												children: customLabels.apiKey
 											}),
-											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
-												className: BDFDB.disCN.marginbottom8,
-												placeholder: translationEngines[key].key,
-												value: authKeys[key] && authKeys[key].key,
-												onChange: value => {
-													if (!authKeys[key]) authKeys[key] = {};
-													authKeys[key].key = (value || "").trim();
-													BDFDB.DataUtils.save(authKeys, this, "authKeys");
-												}
-											}),
+											createAuthKeyInput(key),
 											// API Endpoint
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormTitle.Title, {
 												className: BDFDB.disCN.marginbottom8,
 												tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
-												children: "API Endpoint:"
+												children: customLabels.endpoint
 											}),
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
 												className: BDFDB.disCN.marginbottom8,
@@ -558,7 +663,7 @@ module.exports = (_ => {
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.FormTitle.Title, {
 												className: BDFDB.disCN.marginbottom8,
 												tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
-												children: "Model ID:"
+												children: customLabels.model
 											}),
 											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
 												className: BDFDB.disCN.marginbottom8,
@@ -569,6 +674,25 @@ module.exports = (_ => {
 													authKeys[key].model = (value || "").trim();
 													BDFDB.DataUtils.save(authKeys, this, "authKeys");
 												}
+											}),
+											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+												className: BDFDB.disCN.marginbottom8,
+												children: [
+													BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
+														grow: 1, basis: "50%",
+														children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
+															placeholder: customLabels.temperature, value: authKeys[key] && authKeys[key].temperature != null ? authKeys[key].temperature : "0.2",
+															onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].temperature = (value || "").trim(); BDFDB.DataUtils.save(authKeys, this, "authKeys");}
+														})
+													}),
+													BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {
+														grow: 1, basis: "50%",
+														children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
+															placeholder: customLabels.topP, value: authKeys[key] && authKeys[key].top_p != null ? authKeys[key].top_p : "0.8",
+															onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].top_p = (value || "").trim(); BDFDB.DataUtils.save(authKeys, this, "authKeys");}
+														})
+													})
+												]
 											})
 										]
 									})
@@ -590,7 +714,7 @@ module.exports = (_ => {
 												type: "Switch",
 												margin: 0,
 												grow: 0,
-												label: "Paid Version",
+												label: customLabels.paid,
 												tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
 												value: authKeys[key] && authKeys[key].paid,
 												onChange: value => {
@@ -598,17 +722,24 @@ module.exports = (_ => {
 													authKeys[key].paid = value;
 													BDFDB.DataUtils.save(authKeys, this, "authKeys");
 												}
+											}),
+											key === "deepseek" && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.SettingsItem, {
+												type: "Switch", margin: 0, grow: 0, label: customLabels.thinking, tag: BDFDB.LibraryComponents.FormTitle.Tags.H5,
+												value: authKeys[key] && authKeys[key].thinking,
+												onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].thinking = value; BDFDB.DataUtils.save(authKeys, this, "authKeys");}
 											})
 										]
 									}),
-									BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
-										placeholder: translationEngines[key].key,
-										value: authKeys[key] && authKeys[key].key,
-										onChange: value => {
-											if (!authKeys[key]) authKeys[key] = {};
-											authKeys[key].key = (value || "").trim();
-											BDFDB.DataUtils.save(authKeys, this, "authKeys");
-										}
+									createAuthKeyInput(key),
+									key === "deepseek" && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
+										className: BDFDB.disCN.marginbottom8, placeholder: customLabels.model.replace(/[：:]$/, ""), value: authKeys[key] && authKeys[key].model || "deepseek-v4-flash",
+										onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].model = (value || "").trim(); BDFDB.DataUtils.save(authKeys, this, "authKeys");}
+									}),
+									key === "deepseek" && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex, {
+										children: [
+											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {grow: 1, basis: "50%", children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {placeholder: customLabels.temperature, value: authKeys[key] && authKeys[key].temperature != null ? authKeys[key].temperature : "0.2", onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].temperature = (value || "").trim(); BDFDB.DataUtils.save(authKeys, this, "authKeys");}})}),
+											BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Flex.Child, {grow: 1, basis: "50%", children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {placeholder: customLabels.topP, value: authKeys[key] && authKeys[key].top_p != null ? authKeys[key].top_p : "0.8", onChange: value => {if (!authKeys[key]) authKeys[key] = {}; authKeys[key].top_p = (value || "").trim(); BDFDB.DataUtils.save(authKeys, this, "authKeys");}})})
+										]
 									}),
 									// region selector for Microsoft translator
 									key === "microsoft" && BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.Select, {
@@ -674,7 +805,7 @@ module.exports = (_ => {
 							title: this.labels.prefixes_disable_text,
 							className: BDFDB.disCN.marginbottom8,
 							children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.ListInput, {
-								placeholder: "New Exception Prefix (e.g. !)",
+								placeholder: customLabels.exceptionPrefix,
 								maxLength: this.defaults.exceptions.wordStart.max,
 								items: this.settings.exceptions.wordStart,
 								onChange: value => {
@@ -700,7 +831,7 @@ module.exports = (_ => {
 												shrink: 0,
 												basis: "30%",
 												children: BDFDB.ReactUtils.createElement(BDFDB.LibraryComponents.TextInput, {
-													placeholder: "Prefix (e.g. $fr)",
+													placeholder: customLabels.prefix,
 													value: entry.prefix,
 													onChange: value => {
 														this.settings.prefixes.translationPrefixData[index].prefix = value;
@@ -774,7 +905,7 @@ module.exports = (_ => {
 										this.SettingsUpdated = true;
 										BDFDB.ReactUtils.forceUpdate(this);
 									},
-									children: "+ Add new prefix"
+									children: customLabels.addPrefix
 								})
 							]
 						}));
@@ -1457,6 +1588,37 @@ module.exports = (_ => {
 				});
 			}
 
+			getAiApiErrorMessage (error, response, body) {
+				const statusCode = response && response.statusCode || 0;
+				let parsedBody = body;
+				if (typeof parsedBody == "string") {
+					try {parsedBody = JSON.parse(parsedBody);}
+					catch (_) {}
+				}
+				const apiError = parsedBody && parsedBody.error || parsedBody;
+				const rawMessage = String(apiError && (apiError.message || apiError.detail) || error && (error.message || error.code) || "").trim();
+				const errorCode = String(apiError && (apiError.code || apiError.type || apiError.param) || "").toLowerCase();
+				const searchable = `${errorCode} ${rawMessage}`.toLowerCase();
+				let label;
+				if (statusCode == 401 || statusCode == 403 || /invalid[_ -]?api[_ -]?key|authentication|unauthorized|permission/.test(searchable)) label = this.labels.error_keyoutdated;
+				else if (statusCode == 429 && /quota|billing|credit|balance|insufficient/.test(searchable)) label = this.labels.error_insufficientquota;
+				else if (statusCode == 429) label = this.labels.error_ratelimit;
+				else if (statusCode == 404 && /model/.test(searchable) || /model[^.]*not found|does not exist|unknown model|invalid[_ -]?model/.test(searchable)) label = this.labels.error_modelnotfound;
+				else if (/unsupported[^.]*parameter|parameter[^.]*not supported|does not support[^.]*temperature|does not support[^.]*top[_ ]?p|unsupported_value/.test(searchable)) label = this.labels.error_parameterunsupported;
+				else if (/invalid[^.]*parameter|invalid[_ -]?request|out of range|must be (less|greater|between|one of)|expected/.test(searchable)) label = this.labels.error_parameterinvalid;
+				else if (statusCode == 404) label = this.labels.error_endpointnotfound;
+				else if (statusCode == 400 || statusCode == 405 || statusCode == 415 || statusCode == 422) label = this.labels.error_requestincompatible;
+				else if (error && (/timed?\s*out|etimedout|esockettimedout/.test(searchable))) label = this.labels.error_timeout;
+				else if (statusCode >= 500) label = this.labels.error_serverdown;
+				else label = this.labels.error_unknownapi;
+				const safeMessage = rawMessage.replace(/(?:sk|key)-[a-z0-9_-]{8,}/gi, "[REDACTED]").slice(0, 300);
+				return `${this.labels.toast_translating_failed}. ${label}${safeMessage ? ` (${safeMessage})` : ""}`;
+			}
+
+			showAiApiError (error, response, body) {
+				BDFDB.NotificationUtils.toast(this.getAiApiErrorMessage(error, response, body), {type: "danger", position: "center"});
+			}
+
 			deepSeekTranslate(data, callback) {
 				const translationPrompt = `
 				You are a professional localization expert. Translate the following ${data.input.auto ? "" : data.input.name + " "}content to ${data.output.name} following these rules:
@@ -1474,7 +1636,7 @@ module.exports = (_ => {
 				`;
 
 				const requestData = {
-					model: "deepseek-v4-flash",
+					model: authKeys.deepseek && authKeys.deepseek.model || "deepseek-v4-flash",
 					messages: [{
 						role: "system",
 						content: "You are a senior bilingual localization specialist"
@@ -1482,9 +1644,12 @@ module.exports = (_ => {
 						role: "user",
 						content: translationPrompt
 					}],
-					temperature: 0.2,
-					top_p: 0.8
+					thinking: {type: authKeys.deepseek && authKeys.deepseek.thinking ? "enabled" : "disabled"}
 				};
+				const temperature = Number(authKeys.deepseek && authKeys.deepseek.temperature != null ? authKeys.deepseek.temperature : "0.2");
+				const topP = Number(authKeys.deepseek && authKeys.deepseek.top_p != null ? authKeys.deepseek.top_p : "0.8");
+				if (Number.isFinite(temperature) && temperature >= 0 && temperature <= 2) requestData.temperature = temperature;
+				if (Number.isFinite(topP) && topP >= 0 && topP <= 1) requestData.top_p = topP;
 
 				BDFDB.LibraryRequires.request("https://api.deepseek.com/v1/chat/completions", {
 					method: "post",
@@ -1508,24 +1673,7 @@ module.exports = (_ => {
 						
 					}
 					else {
-						if (response.statusCode == 401 || response.statusCode == 403) {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_keyoutdated}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
-						else if (response.statusCode == 429) {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_dailylimit}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
-						else {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_serverdown}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
+						this.showAiApiError(error, response, body);
 						callback("");
 					}
 				});
@@ -1559,10 +1707,18 @@ module.exports = (_ => {
 					}, {
 						role: "user",
 						content: translationPrompt
-					}],
-					temperature: 0.2,
-					top_p: 0.8
+					}]
 				};
+				const temperatureValue = authKeys.oaicompat && authKeys.oaicompat.temperature;
+				const topPValue = authKeys.oaicompat && authKeys.oaicompat.top_p;
+				if (temperatureValue !== "" && temperatureValue != null) {
+					const temperature = Number(temperatureValue);
+					if (Number.isFinite(temperature) && temperature >= 0 && temperature <= 2) requestData.temperature = temperature;
+				}
+				if (topPValue !== "" && topPValue != null) {
+					const topP = Number(topPValue);
+					if (Number.isFinite(topP) && topP >= 0 && topP <= 1) requestData.top_p = topP;
+				}
 
 				BDFDB.LibraryRequires.request(apiEndpoint, {
 					method: "post",
@@ -1585,24 +1741,7 @@ module.exports = (_ => {
 						}
 					}
 					else {
-						if (response.statusCode == 401 || response.statusCode == 403) {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_keyoutdated}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
-						else if (response.statusCode == 429) {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_dailylimit}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
-						else {
-							BDFDB.NotificationUtils.toast(`${this.labels.toast_translating_failed}. ${this.labels.toast_translating_tryanother}. ${this.labels.error_serverdown}`, {
-								type: "danger",
-								position: "center"
-							});
-						}
+						this.showAiApiError(error, response, body);
 						callback("");
 					}
 				});
@@ -2021,9 +2160,23 @@ module.exports = (_ => {
 			}
 
 			setLabelsByLanguage () {
-				switch (BDFDB.LanguageUtils.getLanguage().id) {
+				const addAiErrorLabels = labels => Object.assign(labels, {
+					error_modelnotfound: "The model does not exist or your account cannot access it.",
+					error_parameterunsupported: "The selected model does not support one or more configured parameters. Clear or change parameters such as Temperature or Top P.",
+					error_parameterinvalid: "A request parameter is invalid or outside the allowed range.",
+					error_endpointnotfound: "The API Endpoint was not found. Check its address and path.",
+					error_requestincompatible: "The API is incompatible with the Chat Completions request format.",
+					error_insufficientquota: "The API quota or balance is insufficient.",
+					error_ratelimit: "Too many requests. Try again later.",
+					error_timeout: "The API request timed out.",
+					error_unknownapi: "The API returned an unrecognized error."
+				});
+				const languageId = BDFDB.LanguageUtils.getLanguage().id;
+				const originalLabels = (() => {
+				switch (languageId) {
 					case "bg":		// Bulgarian
 						return {
+							general_useSpoilerInOriginal:			"Използва спойлери вместо цитати за оригиналния текст на съобщението",
 							backup_engine:						"Резервен-Преводач",
 							backup_engine_warning:					"Ще използва Резервен-Преводач",
 							context_messagetranslateoption:				"Превод на съобщението",
@@ -2061,6 +2214,7 @@ module.exports = (_ => {
 						};
 					case "cs":		// Czech
 						return {
+							general_useSpoilerInOriginal:			"Použije spoilery místo citací pro původní text zprávy",
 							backup_engine:						"Backup-Překladatel",
 							backup_engine_warning:					"Použije Backup-Překladatel",
 							context_messagetranslateoption:				"Přeložit zprávu",
@@ -2098,6 +2252,7 @@ module.exports = (_ => {
 						};
 					case "da":		// Danish
 						return {
+							general_useSpoilerInOriginal:			"Brug spoilers i stedet for citater til den oprindelige beskedtekst",
 							backup_engine:						"Backup-Oversætter",
 							backup_engine_warning:					"Vil bruge Backup-Oversætter",
 							context_messagetranslateoption:				"Oversæt besked",
@@ -2135,6 +2290,7 @@ module.exports = (_ => {
 						};
 					case "de":		// German
 						return {
+							general_useSpoilerInOriginal:			"Verwendet Spoiler statt Zitate für den ursprünglichen Nachrichtentext",
 							backup_engine:						"Backup-Übersetzer",
 							backup_engine_warning:					"Wird Backup-Übersetzer verwenden",
 							context_messagetranslateoption:				"Nachricht übersetzen",
@@ -2172,6 +2328,7 @@ module.exports = (_ => {
 						};
 					case "el":		// Greek
 						return {
+							general_useSpoilerInOriginal:			"Χρήση spoiler αντί για παραθέσεις στο αρχικό κείμενο του μηνύματος",
 							backup_engine:						"Μεταφράστης-Αντίγραφο ασφαλείας",
 							backup_engine_warning:					"Θα χρησιμοποιηθεί Μεταφράστης-Αντίγραφο ασφαλείας",
 							context_messagetranslateoption:				"Μετάφραση μηνύματος",
@@ -2209,6 +2366,7 @@ module.exports = (_ => {
 						};
 					case "es":		// Spanish
 						return {
+							general_useSpoilerInOriginal:			"Usar spoilers en lugar de citas para el texto original del mensaje",
 							backup_engine:						"Backup-Traductor",
 							backup_engine_warning:					"Utilizará Backup-Traductor",
 							context_messagetranslateoption:				"Traducir mensaje",
@@ -2246,6 +2404,7 @@ module.exports = (_ => {
 						};
 					case "es-419":		// Spanish (Latin America)
 						return {
+							general_useSpoilerInOriginal:			"Usar spoilers en lugar de citas para el texto original del mensaje",
 							backup_engine:						"Traspaso de respaldo",
 							backup_engine_warning:					"Utilizará el traductor de respaldo",
 							context_messagetranslateoption:				"Mensaje de traducir",
@@ -2283,6 +2442,7 @@ module.exports = (_ => {
 						};
 					case "fi":		// Finnish
 						return {
+							general_useSpoilerInOriginal:			"Käytä alkuperäisessä viestissä spoilereita lainausten sijaan",
 							backup_engine:						"Backup-Kääntäjä",
 							backup_engine_warning:					"Käyttää Backup-Kääntäjä",
 							context_messagetranslateoption:				"Käännä viesti",
@@ -2320,6 +2480,7 @@ module.exports = (_ => {
 						};
 					case "fr":		// French
 						return {
+							general_useSpoilerInOriginal:			"Utiliser des spoilers au lieu de citations pour le texte original du message",
 							backup_engine:						"Backup-Traducteur",
 							backup_engine_warning:					"Utilisera Backup-Traducteur",
 							context_messagetranslateoption:				"Traduire le message",
@@ -2357,6 +2518,7 @@ module.exports = (_ => {
 						};
 					case "hi":		// Hindi
 						return {
+							general_useSpoilerInOriginal:			"मूल संदेश टेक्स्ट के लिए उद्धरण के बजाय स्पॉइलर का उपयोग करें",
 							backup_engine:						"बैकअप-अनुवादक",
 							backup_engine_warning:					"बैकअप-अनुवादक का उपयोग करेंगे",
 							context_messagetranslateoption:				"संदेश का अनुवाद करें",
@@ -2394,6 +2556,7 @@ module.exports = (_ => {
 						};
 					case "hr":		// Croatian
 						return {
+							general_useSpoilerInOriginal:			"Koristi spoilere umjesto citata za izvorni tekst poruke",
 							backup_engine:						"Rezervni-Prevoditelj",
 							backup_engine_warning:					"Koristit će se Rezervni-Prevoditelj",
 							context_messagetranslateoption:				"Prevedi poruku",
@@ -2431,6 +2594,7 @@ module.exports = (_ => {
 						};
 					case "hu":		// Hungarian
 						return {
+							general_useSpoilerInOriginal:			"Spoilerek használata idézetek helyett az eredeti üzenetszöveghez",
 							backup_engine:						"Backup-Fordító",
 							backup_engine_warning:					"A Backup-Fordító programot fogja használni",
 							context_messagetranslateoption:				"Üzenet lefordítása",
@@ -2468,6 +2632,7 @@ module.exports = (_ => {
 						};
 					case "it":		// Italian
 						return {
+							general_useSpoilerInOriginal:			"Usa gli spoiler invece delle citazioni per il testo originale del messaggio",
 							backup_engine:						"Backup-Traduttore",
 							backup_engine_warning:					"Utilizzerà Backup-Traduttore",
 							context_messagetranslateoption:				"Traduci messaggio",
@@ -2505,6 +2670,7 @@ module.exports = (_ => {
 						};
 					case "ja":		// Japanese
 						return {
+							general_useSpoilerInOriginal:			"元のメッセージ本文を引用ではなくスポイラーで表示する",
 							backup_engine:						"バックアップ翻訳者",
 							backup_engine_warning:					"バックアップ翻訳者 を使用します",
 							context_messagetranslateoption:				"メッセージの翻訳",
@@ -2542,6 +2708,7 @@ module.exports = (_ => {
 						};
 					case "ko":		// Korean
 						return {
+							general_useSpoilerInOriginal:			"원본 메시지 텍스트에 인용 대신 스포일러 사용",
 							backup_engine:						"백업 번역기",
 							backup_engine_warning:					"백업 번역기를 사용합니다",
 							context_messagetranslateoption:				"메시지 번역",
@@ -2579,6 +2746,7 @@ module.exports = (_ => {
 						};
 					case "lt":		// Lithuanian
 						return {
+							general_useSpoilerInOriginal:			"Pradiniam žinutės tekstui naudoti paslėptą tekstą vietoje citatų",
 							backup_engine:						"Backup-Vertėjas",
 							backup_engine_warning:					"Naudos Backup-Vertėjas",
 							context_messagetranslateoption:				"Versti pranešimą",
@@ -2616,6 +2784,7 @@ module.exports = (_ => {
 						};
 					case "nl":		// Dutch
 						return {
+							general_useSpoilerInOriginal:			"Spoilers gebruiken in plaats van citaten voor de oorspronkelijke berichttekst",
 							backup_engine:						"Backup-Vertaler",
 							backup_engine_warning:					"Zal Backup-Vertaler gebruiken",
 							context_messagetranslateoption:				"Bericht vertalen",
@@ -2653,6 +2822,7 @@ module.exports = (_ => {
 						};
 					case "no":		// Norwegian
 						return {
+							general_useSpoilerInOriginal:			"Bruk spoilere i stedet for sitater for den opprinnelige meldingsteksten",
 							backup_engine:						"Backup-Oversetter",
 							backup_engine_warning:					"Vil bruke Backup-Oversetter",
 							context_messagetranslateoption:				"Oversett melding",
@@ -2690,6 +2860,7 @@ module.exports = (_ => {
 						};
 					case "pl":		// Polish
 						return {
+							general_useSpoilerInOriginal:			"Używaj spoilerów zamiast cytatów dla oryginalnej treści wiadomości",
 							backup_engine:						"Backup-Tłumacz",
 							backup_engine_warning:					"Użyje Backup-Tłumacz",
 							context_messagetranslateoption:				"Przetłumacz wiadomość",
@@ -2727,6 +2898,7 @@ module.exports = (_ => {
 						};
 					case "pt-BR":		// Portuguese (Brazil)
 						return {
+							general_useSpoilerInOriginal:			"Usar spoilers em vez de citações para o texto original da mensagem",
 							backup_engine:						"Backup-Tradutor",
 							backup_engine_warning:					"Usará o Backup-Tradutor",
 							context_messagetranslateoption:				"Traduzir mensagem",
@@ -2764,6 +2936,7 @@ module.exports = (_ => {
 						};
 					case "ro":		// Romanian
 						return {
+							general_useSpoilerInOriginal:			"Folosește spoilere în locul citatelor pentru textul original al mesajului",
 							backup_engine:						"Backup-Traducător",
 							backup_engine_warning:					"Va folosi Backup-Traducător",
 							context_messagetranslateoption:				"Traduceți mesajul",
@@ -2801,6 +2974,7 @@ module.exports = (_ => {
 						};
 					case "ru":		// Russian
 						return {
+							general_useSpoilerInOriginal:			"Использовать спойлеры вместо цитат для исходного текста сообщения",
 							backup_engine:						"Резервный-Переводчик",
 							backup_engine_warning:					"Буду использовать Резервный-Переводчик",
 							context_messagetranslateoption:				"Перевести сообщение",
@@ -2838,6 +3012,7 @@ module.exports = (_ => {
 						};
 					case "sv":		// Swedish
 						return {
+							general_useSpoilerInOriginal:			"Använd spoilers i stället för citat för den ursprungliga meddelandetexten",
 							backup_engine:						"Backup-Översättare",
 							backup_engine_warning:					"Kommer att använda Backup-Översättare",
 							context_messagetranslateoption:				"Översätt meddelande",
@@ -2875,6 +3050,7 @@ module.exports = (_ => {
 						};
 					case "th":		// Thai
 						return {
+							general_useSpoilerInOriginal:			"ใช้สปอยเลอร์แทนคำพูดอ้างอิงสำหรับข้อความต้นฉบับ",
 							backup_engine:						"สำรอง-นักแปล",
 							backup_engine_warning:					"จะใช้การสำรองข้อมูล-นักแปล",
 							context_messagetranslateoption:				"แปลข้อความ",
@@ -2912,6 +3088,7 @@ module.exports = (_ => {
 						};
 					case "tr":		// Turkish
 						return {
+							general_useSpoilerInOriginal:			"Orijinal mesaj metni için alıntılar yerine spoiler kullan",
 							backup_engine:						"Yedekleme-Çevirmen",
 							backup_engine_warning:					"Yedekleme-Çevirmen kullanacak",
 							context_messagetranslateoption:				"Mesajı Çevir",
@@ -2949,6 +3126,7 @@ module.exports = (_ => {
 						};
 					case "uk":		// Ukrainian
 						return {
+							general_useSpoilerInOriginal:			"Використовувати спойлери замість цитат для початкового тексту повідомлення",
 							backup_engine:						"Резервний-перекладач",
 							backup_engine_warning:					"Використовуватиме Резервний-Перекладач",
 							context_messagetranslateoption:				"Перекласти повідомлення",
@@ -2986,6 +3164,7 @@ module.exports = (_ => {
 						};
 					case "vi":		// Vietnamese
 						return {
+							general_useSpoilerInOriginal:			"Dùng spoiler thay cho trích dẫn đối với nội dung tin nhắn gốc",
 							backup_engine:						"Backup-Gười phiên dịch",
 							backup_engine_warning:					"Sẽ sử dụng Backup-Gười phiên dịch",
 							context_messagetranslateoption:				"Dịch tin nhắn",
@@ -3023,6 +3202,7 @@ module.exports = (_ => {
 						};
 					case "zh-CN":		// Chinese (China)
 						return {
+							general_useSpoilerInOriginal:			"使用剧透格式代替引用显示原始消息文本",
 							backup_engine:						"备份翻译器",
 							backup_engine_warning:					"将使用备份翻译器",
 							context_messagetranslateoption:				"翻译消息",
@@ -3060,6 +3240,7 @@ module.exports = (_ => {
 						};
 					case "zh-TW":		// Chinese (Taiwan)
 						return {
+							general_useSpoilerInOriginal:			"使用劇透格式代替引用顯示原始訊息文字",
 							backup_engine:						"備份翻譯器",
 							backup_engine_warning:					"將使用備份翻譯器",
 							context_messagetranslateoption:				"翻譯訊息",
@@ -3097,6 +3278,7 @@ module.exports = (_ => {
 						};
 					default:		// English
 						return {
+							general_useSpoilerInOriginal:			"Use spoilers instead of quotes for the original message text",
 							backup_engine:						"Backup-Translator",
 							backup_engine_warning:					"Will use Backup-Translator",
 							context_messagetranslateoption:				"Translate Message",
@@ -3133,6 +3315,31 @@ module.exports = (_ => {
 							translator_engine:					"Translator"
 						};
 				}
+				})();
+				const labels = addAiErrorLabels(originalLabels);
+				if (languageId == "zh-CN") Object.assign(labels, {
+					error_modelnotfound: "模型不存在或当前账户无权访问。",
+					error_parameterunsupported: "当前模型不支持所设置的参数，请清空或修改 Temperature、Top P 等参数。",
+					error_parameterinvalid: "请求参数无效或超出允许范围。",
+					error_endpointnotfound: "API Endpoint 不存在，请检查地址和路径。",
+					error_requestincompatible: "API 与 Chat Completions 请求格式不兼容。",
+					error_insufficientquota: "API 额度或余额不足。",
+					error_ratelimit: "请求过于频繁，请稍后再试。",
+					error_timeout: "API 请求超时。",
+					error_unknownapi: "API 返回了未识别的错误。"
+				});
+				else if (languageId == "zh-TW") Object.assign(labels, {
+					error_modelnotfound: "模型不存在或目前帳戶無權存取。",
+					error_parameterunsupported: "目前模型不支援所設定的參數，請清空或修改 Temperature、Top P 等參數。",
+					error_parameterinvalid: "請求參數無效或超出允許範圍。",
+					error_endpointnotfound: "API Endpoint 不存在，請檢查位址和路徑。",
+					error_requestincompatible: "API 與 Chat Completions 請求格式不相容。",
+					error_insufficientquota: "API 額度或餘額不足。",
+					error_ratelimit: "請求過於頻繁，請稍後再試。",
+					error_timeout: "API 請求逾時。",
+					error_unknownapi: "API 傳回了無法識別的錯誤。"
+				});
+				return labels;
 			}
 		};
 	})(window.BDFDB_Global.PluginUtils.buildPlugin(changeLog));
